@@ -103,11 +103,14 @@ function uipanel1_SelectionChangeFcn(hObject, eventdata, handles)
 %	OldValue: handle of the previously selected object or empty if none was selected
 %	NewValue: handle of the currently selected object
 % handles    structure with handles and user data (see GUIDATA)
+
+
 if (get(handles.rbGatunek,'Value')==1)  %&((get(handles.listaRo,'Value'))==0))
     set(handles.listaGa,'Enable','on')%'String','Proszê najpierw wybraæ rodzaj')
 elseif (get(handles.rbRodzaj,'Value')==1)
     set(handles.listaGa,'Enable','off')
 end
+
 
 
 
@@ -118,24 +121,47 @@ function listaRo_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns listaRo contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listaRo
 wybR=get(hObject,'Value'); %który element jest wybrany (wartoœæ liczbowa)
 cR=get(hObject,'String'); %lista wszystkich mo¿liwych wartoœci (odpowiednik zmiennej cRodz)
-wybRodz=cR(wybR);
+wybRodz=cR(wybR)
 dane=getGlobalArk;
-%tu potrzebna nieskoñczona pêtla while
-listag=find(strcmp(dane.Genus,wybRodz)) %indeksy dla których genus==wybRodz
-gatunki=[unique(dane(listag,3:4))]
-%for i=1:length(gatunki)
-spisGat=strcat(cellstr(gatunki(:,1)),cellstr(gatunki(:,2)))
+%tu potrzebna  pêtla while? ¯eby zawsze reagowa³o
+%while (get(handles.rbGatunek,'Value')==1)
+    listag=find(strcmp(dane.Genus,wybRodz)); %indeksy dla których genus==wybRodz
+    gatunki=[unique(dane(listag,3:4))];
+    spisGat=strcat(cellstr(gatunki(:,1)),cellstr(gatunki(:,2)));
+    switch get(handles.rbGatunek,'Value')
+       case 1
+    set(handles.listaGa,'String',spisGat)
+      case 0
+         set(handles.listaGa,'String','Wybrano analizê rodzaju')
+    listawag=(dane(listag,2))
+  plot(listawag)
+    end
+    %break
 %end
-if (get(handles.rbGatunek,'Value')==1)
-set(handles.listaGa,'String',spisGat)
-end
 mtest=[2 3 4];
 
 
+% --- Executes on selection change in listaGa.
+function listaGa_Callback(hObject, eventdata, handles)
+% hObject    handle to listaGa (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+wybR=get(handles.listaRo,'Value'); %który element jest wybrany (wartoœæ liczbowa)
+wybG=get(handles.listaGa,'Value');
+cG=get(handles.listaGa,'String');
+cR=get(handles.listaRo,'String'); %lista wszystkich mo¿liwych wartoœci (odpowiednik zmiennej cRodz)
+wybRodz=cR(wybR)
+dane=getGlobalArk;
+listag=find(strcmp(dane.Genus,wybRodz)); %indeksy dla których genus==wybRodz
+gatunki=[(dane(listag,3:4))];
+indeksy=find(strcmp(strcat(cellstr(gatunki(:,1)),cellstr(gatunki(:,2))),cG(wybG)));
+listawag=dane(indeksy,2)
+plot(listawag)
+mat=[3 4 2];
+%listawag=
 
 % coœ errorzy
 %if ((cR=='Wybierz rodzaj')&(get(handles.rbGatunek,'Value'))==1)
@@ -174,15 +200,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on selection change in listaGa.
-function listaGa_Callback(hObject, eventdata, handles)
-% hObject    handle to listaGa (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns listaGa contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listaGa
-
 
 % --- Executes during object creation, after setting all properties.
 function listaGa_CreateFcn(hObject, eventdata, handles)
@@ -195,13 +212,6 @@ function listaGa_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-% --- Executes on button press in rysuj.
-function rysuj_Callback(hObject, eventdata, handles)
-% hObject    handle to rysuj (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 % --------------------------------------------------------------------
