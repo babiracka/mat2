@@ -124,20 +124,33 @@ wybR=get(hObject,'Value'); %który element jest wybrany (wartoœæ liczbowa)
 cR=get(hObject,'String'); %lista wszystkich mo¿liwych wartoœci (odpowiednik zmiennej cRodz)
 wybRodz=cR(wybR);
 dane=getGlobalArk;
+%listag=dane(dane.Genus==wybRodz)%,[dane.Genus, dane.species])
+listag=find(strcmp(dane.Genus,wybRodz)) %indeksy dla których genus==wybRodz
+gatunki={dane(listag,3:4))
+spisGat=unique(gatunki)
+set(handles.listaGa,'String',spisGat)
+mtest=[2 3 4];
+
+
+
 % coœ errorzy
 %if ((cR=='Wybierz rodzaj')&(get(handles.rbGatunek,'Value'))==1)
 %   set(handles.listaGa,'String','Proszê najpierw wybraæ rodzaj')
 %end
 %gatunki=[unique(dane(2:end,3:4))];
-if wybRodz==dane(i,3)
-gatg=[dane(2:i,3:4)]%dynamiczne tworzenie wektora gatunków
-gatlista=unique(gatg)
+%for i=1:length(dane)
+%   if wybRodz==dane(i,3)
+%      gatg=[dane(2:i,3:4)]%dynamiczne tworzenie wektora gatunków
+%     gatlista=unique(gatg)
+%    set(handles.listaGa,'String',gatg)
+%end
+%end
 %for i=1:length(gatunki)
- %   if (strncmp(cR,gatunki(i,:),6)==1)
-  %      %dynamiczne tworzenie wektora gatunkow
-   %     gatg=[gatunki(i,:)]
-    %    set(handles.listaGa,'String',gatg);
-    %end
+%   if (strncmp(cR,gatunki(i,:),6)==1)
+%      %dynamiczne tworzenie wektora gatunkow
+%     gatg=[gatunki(i,:)]
+%    set(handles.listaGa,'String',gatg);
+%end
 %end
 %Ustawienie wartoœci na liœcie gatunków:
 

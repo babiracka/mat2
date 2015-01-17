@@ -124,7 +124,17 @@ wybR=get(hObject,'Value'); %który element jest wybrany (wartoœæ liczbowa)
 cR=get(hObject,'String'); %lista wszystkich mo¿liwych wartoœci (odpowiednik zmiennej cRodz)
 wybRodz=cR(wybR);
 dane=getGlobalArk;
-listag=dane(dane.Genus==wybRodz,[dane.Genus, dane.species])
+%tu potrzebna nieskoñczona pêtla while
+listag=find(strcmp(dane.Genus,wybRodz)) %indeksy dla których genus==wybRodz
+gatunki=[unique(dane(listag,3:4))]
+%for i=1:length(gatunki)
+spisGat=strcat(cellstr(gatunki(:,1)),cellstr(gatunki(:,2)))
+%end
+if (get(handles.rbGatunek,'Value')==1)
+set(handles.listaGa,'String',spisGat)
+end
+mtest=[2 3 4];
+
 
 
 % coœ errorzy
