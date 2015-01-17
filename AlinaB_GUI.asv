@@ -22,7 +22,7 @@ function varargout = AlinaB_GUI(varargin)
 
 % Edit the above text to modify the response to help AlinaB_GUI
 
-% Last Modified by GUIDE v2.5 16-Jan-2015 11:52:16
+% Last Modified by GUIDE v2.5 17-Jan-2015 09:53:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -86,7 +86,7 @@ for k=1:length(arkusz)
     c(k)=arkusz.Genus(k);
 end
 rodzaje=unique(c);
-cRodz=['Wybierz rodzaj', rodzaje]
+cRodz=['Wybierz rodzaj', rodzaje];
 %Zmiana napisu na pushbt
 set(hObject,'String','Wybrano plik!')
 %Uaktywnienie przycisków po za³adowaniu plików
@@ -109,7 +109,7 @@ elseif (get(handles.rbRodzaj,'Value')==1)
     set(handles.listaGa,'Enable','off')
 end
 
-%end
+
 
 
 % --- Executes on selection change in listaRo.
@@ -122,14 +122,23 @@ function listaRo_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from listaRo
 wybR=get(hObject,'Value'); %który element jest wybrany (wartoœæ liczbowa)
 cR=get(hObject,'String'); %lista wszystkich mo¿liwych wartoœci (odpowiednik zmiennej cRodz)
-wybRodz=cR(wybR)
+wybRodz=cR(wybR);
 dane=getGlobalArk;
 % coœ errorzy
 %if ((cR=='Wybierz rodzaj')&(get(handles.rbGatunek,'Value'))==1)
- %  set(handles.listaGa,'String','Proszê najpierw wybraæ rodzaj')
+%   set(handles.listaGa,'String','Proszê najpierw wybraæ rodzaj')
 %end
-
-
+%gatunki=[unique(dane(2:end,3:4))];
+if wybRodz==dane(i,3)
+gatg=[dane(2:i,3:4)]%dynamiczne tworzenie wektora gatunków
+gatlista=unique(gatg)
+%for i=1:length(gatunki)
+ %   if (strncmp(cR,gatunki(i,:),6)==1)
+  %      %dynamiczne tworzenie wektora gatunkow
+   %     gatg=[gatunki(i,:)]
+    %    set(handles.listaGa,'String',gatg);
+    %end
+%end
 %Ustawienie wartoœci na liœcie gatunków:
 
 
@@ -171,6 +180,13 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+% --- Executes on button press in rysuj.
+function rysuj_Callback(hObject, eventdata, handles)
+% hObject    handle to rysuj (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
 % --------------------------------------------------------------------
 function plikMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to plikMenu (see GCBO)
@@ -205,5 +221,3 @@ function zapArkusz_Callback(hObject, eventdata, handles)
 % hObject    handle to zapArkusz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-
