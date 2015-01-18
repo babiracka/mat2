@@ -1,3 +1,4 @@
+
 function varargout = AlinaB_GUI(varargin)
 % ALINAB_GUI MATLAB code for AlinaB_GUI.fig
 %      ALINAB_GUI, by itself, creates a new ALINAB_GUI or raises the existing
@@ -22,7 +23,7 @@ function varargout = AlinaB_GUI(varargin)
 
 % Edit the above text to modify the response to help AlinaB_GUI
 
-% Last Modified by GUIDE v2.5 17-Jan-2015 09:53:55
+% Last Modified by GUIDE v2.5 18-Jan-2015 18:23:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -85,12 +86,13 @@ setGlobalArk(arkusz);
 for k=1:length(arkusz)
     c(k)=arkusz.Genus(k);
 end
+
 rodzaje=unique(c);
-cRodz=['Wybierz rodzaj', rodzaje];
 %Zmiana napisu na pushbt
 set(hObject,'String','Wybrano plik!')
+
 %Uaktywnienie przycisków po za³adowaniu plików
-set(handles.listaRo,'String',cRodz,'Enable','on')
+set(handles.listaRo,'String',rodzaje,'Enable','on')
 set(handles.rbGatunek,'Enable','on')
 set(handles.rbRodzaj,'Enable','on')
 
@@ -105,11 +107,12 @@ function uipanel1_SelectionChangeFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 
-if (get(handles.rbGatunek,'Value')==1)  %&((get(handles.listaRo,'Value'))==0))
-    set(handles.listaGa,'Enable','on')%'String','Proszê najpierw wybraæ rodzaj')
+if (get(handles.rbGatunek,'Value')==1) 
+   set(handles.listaGa,'Enable','on')
 elseif (get(handles.rbRodzaj,'Value')==1)
-    set(handles.listaGa,'Enable','off')
+   set(handles.listaGa,'Enable','off')
 end
+
 
 
 
@@ -123,25 +126,17 @@ function listaRo_Callback(hObject, eventdata, handles)
 
 wybR=get(hObject,'Value'); %który element jest wybrany (wartoœæ liczbowa)
 cR=get(hObject,'String'); %lista wszystkich mo¿liwych wartoœci (odpowiednik zmiennej cRodz)
+wybG=get(handles.listaGa,'Value');
+cG=get(handles.listaGa,'String');
 wybRodz=cR(wybR)
 dane=getGlobalArk;
-%tu potrzebna  pêtla while? ¯eby zawsze reagowa³o
-%while (get(handles.rbGatunek,'Value')==1)
-    listag=find(strcmp(dane.Genus,wybRodz)); %indeksy dla których genus==wybRodz
-    gatunki=[unique(dane(listag,3:4))];
-    spisGat=strcat(cellstr(gatunki(:,1)),cellstr(gatunki(:,2)));
-    switch get(handles.rbGatunek,'Value')
-       case 1
-    set(handles.listaGa,'String',spisGat)
-      case 0
-         set(handles.listaGa,'String','Wybrano analizê rodzaju')
-    listawag=(dane(listag,2))
-  plot(listawag)
-    end
-    %break
-%end
-mtest=[2 3 4];
 
+listag=find(strcmp(dane.Genus,wybRodz)); %indeksy dla których genus==wybRodz
+gatunki=[unique(dane(listag,3:4))]
+
+spisGat=cellstr(gatunki(:,2))
+
+ set(handles.listaGa,'String',spisGat)
 
 % --- Executes on selection change in listaGa.
 function listaGa_Callback(hObject, eventdata, handles)
@@ -149,40 +144,54 @@ function listaGa_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-wybR=get(handles.listaRo,'Value'); %który element jest wybrany (wartoœæ liczbowa)
-wybG=get(handles.listaGa,'Value');
-cG=get(handles.listaGa,'String');
-cR=get(handles.listaRo,'String'); %lista wszystkich mo¿liwych wartoœci (odpowiednik zmiennej cRodz)
-wybRodz=cR(wybR)
-dane=getGlobalArk;
-listag=find(strcmp(dane.Genus,wybRodz)); %indeksy dla których genus==wybRodz
-gatunki=[(dane(listag,3:4))];
-indeksy=find(strcmp(strcat(cellstr(gatunki(:,1)),cellstr(gatunki(:,2))),cG(wybG)));
-listawag=dane(indeksy,2)
-plot(listawag)
-mat=[3 4 2];
-%listawag=
 
-% coœ errorzy
-%if ((cR=='Wybierz rodzaj')&(get(handles.rbGatunek,'Value'))==1)
-%   set(handles.listaGa,'String','Proszê najpierw wybraæ rodzaj')
-%end
-%gatunki=[unique(dane(2:end,3:4))];
-%for i=1:length(dane)
-%   if wybRodz==dane(i,3)
-%      gatg=[dane(2:i,3:4)]%dynamiczne tworzenie wektora gatunków
-%     gatlista=unique(gatg)
-%    set(handles.listaGa,'String',gatg)
-%end
-%end
-%for i=1:length(gatunki)
-%   if (strncmp(cR,gatunki(i,:),6)==1)
-%      %dynamiczne tworzenie wektora gatunkow
-%     gatg=[gatunki(i,:)]
-%    set(handles.listaGa,'String',gatg);
-%end
-%end
-%Ustawienie wartoœci na liœcie gatunków:
+% --- Executes on button press in rysuj.
+
+function rysuj_Callback(hObject, eventdata, handles)
+% hObject    handle to rysuj (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+dane=getGlobalArk;
+wybR=get(handles.listaRo,'Value');
+wybG=get(handles.listaGa,'Value');
+cR=get(handles.listaRo,'String');
+cG=get(handles.listaGa,'String');
+wybRodz=cR(wybR);
+wybGat=cG(wybG);
+stanG=get(handles.rbGatunek,'Value')
+stanR=get(handles.rbRodzaj,'Value')
+indeksyR=find(strcmp(dane.Genus,wybRodz));
+indeksyG=find(strcmp(dane.species,wybGat));
+
+
+%Ustawienie zmiennej listawag
+switch stanR
+    case 1 %analiza dla rodzaju
+        listawag=dane(indeksyR,2)
+        
+      
+    case 0 %analiza dla gatunku
+        listawag=dane(indeksyG,2)
+end
+
+wektorwag=reshape(single(listawag),1,length(double(listawag)));
+hist(wektorwag)
+xlabel('Waga')
+ylabel('Liczba osobników')
+
+
+srednia=num2str(mean(wektorwag));
+minimum=num2str(min(wektorwag));
+maximum=num2str(max(wektorwag));
+mediana=num2str(median(wektorwag));
+stdowe=num2str(std(wektorwag));
+set(handles.wsrednia,'String',strcat(srednia,' g'))
+set(handles.min,'String',strcat(minimum,' g'))
+set(handles.max,'String',strcat(maximum,' g'))
+set(handles.std,'String',strcat(stdowe,' g'))
+set(handles.mediana,'String',strcat(mediana,' g'))
+
+
 
 
 
@@ -226,7 +235,12 @@ function instrukcja_Callback(hObject, eventdata, handles)
 % hObject    handle to instrukcja (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+h=msgbox({'1. Wybierz plik do analizy poprzed przycisk "Za³aduj plik z danymi".'...
+    '2. Zaznacz, czy chcesz analizowaæ ca³y rodzaj, czy konkretny gatunek.'...
+    '3. W przypadku analizy dla gatunku, oprócz rodzaju nalezy wybraæ równie¿ gatunek.'...
+    '4. Aby zobaczyæ wykres oraz analizê statystyczn¹ danych, nale¿y nacisn¹æ przycisk "Rysuj".'...
+    '5. Wybranie opcji "Plik...->Zapisz" skutkuje zapisaniem aktualnego wykresu do pliku .jpg'},...
+'Instrukcja obs³ugi programu')
 
 % --------------------------------------------------------------------
 function zakoncz_Callback(hObject, eventdata, handles)
@@ -242,9 +256,35 @@ function zapWykres_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+saveas(gcf,'mojwykres','jpg')
 
-% --------------------------------------------------------------------
-function zapArkusz_Callback(hObject, eventdata, handles)
+
+function std_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to zapArkusz (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+function min_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to zapArkusz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+function max_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to zapArkusz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+function wsrednia_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to zapArkusz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+function mediana_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to zapArkusz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+function text1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to zapArkusz (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+function Untitled_4_Callback(hObject, eventdata, handles)
+

@@ -1,0 +1,6 @@
+Instrukcja dzia³ania:
+Najpierw nale¿y wcisn¹æ przycisk "Za³aduj plik z danymi". Gdy napis zmieni siê na "Wybrano plik!", mo¿na przyst¹piæ do wyboru rodzaju oraz, jeœli zaznaczono opcjê "analiza dla gatunku", mo¿liwy jest tak¿e wybór gatunku, dla którego chce siê zobaczyæ wykres oraz analizê statystyczn¹.
+Wykres przedstawia rozk³ad wag dla danego gatunku/rozk³adu, zaœ analiza to przedstawienie wagi œredniej, mediany, wartoœci minimalnej, maksymalnej oraz odchylenia standardowego.
+Po wybraniu "Plik...->Zapisz arkusz" mo¿liwe jest wyeksportowanie uzyskanego wykresu do pliku w formacie .jpg, zaœ menu "Program..." ma dwie opcje do wyboru: "Instrukcja", czyli wyœwietlenie niniejszej instrukcji w oknie oraz "Zakoñcz" powoduj¹ce zakoñczenie dzia³ania programu.
+
+2015, Alina Babiracka
